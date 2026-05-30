@@ -55,6 +55,7 @@ export default function EditItineraryForm({
           id="name"
           name="name"
           required
+          data-testid="edit-trip-name-input"
           className="bg-zinc-950/50 border-white/10 text-zinc-100"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -89,6 +90,7 @@ export default function EditItineraryForm({
         </Button>
         <Button
           type="submit"
+          data-testid="edit-trip-submit-button"
           disabled={isPending || !isFormValid}
           className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >

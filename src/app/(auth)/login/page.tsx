@@ -88,6 +88,7 @@ export default function LoginPage() {
                 type="email"
                 aria-label="Email"
                 placeholder="Enter your email"
+                data-testid="login-email-input"
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={email}
@@ -105,6 +106,7 @@ export default function LoginPage() {
                 type={isVisible ? 'text' : 'password'}
                 aria-label="Password"
                 placeholder="Enter your password"
+                data-testid="login-password-input"
                 className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={password}
@@ -142,6 +144,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
+              data-testid="login-submit-button"
               disabled={isPending || !isFormValid}
               className="mt-2 h-12 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0 hover:opacity-90 disabled:opacity-50"
             >

@@ -50,6 +50,7 @@ export default function NewItineraryPage() {
             id="name"
             name="name"
             placeholder="e.g., Summer in Kyoto"
+            data-testid="create-trip-name-input"
             required
             className="bg-zinc-950/50 border-white/10 text-zinc-100"
             value={name}
@@ -79,6 +80,7 @@ export default function NewItineraryPage() {
           </Button>
           <Button
             type="submit"
+            data-testid="create-trip-submit-button"
             disabled={isPending || !isFormValid}
             className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >

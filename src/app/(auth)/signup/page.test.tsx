@@ -45,26 +45,24 @@ describe('SignupPage', () => {
     expect(
       screen.getByRole('heading', { name: /create account/i })
     ).toBeDefined();
-    expect(screen.getByPlaceholderText(/enter your name/i)).toBeDefined();
-    expect(screen.getByPlaceholderText(/enter your email/i)).toBeDefined();
-    expect(screen.getByPlaceholderText(/create a password/i)).toBeDefined();
-    expect(
-      screen.getByRole('button', { name: /create account/i })
-    ).toBeDefined();
+    expect(screen.getByTestId('signup-name-input')).toBeDefined();
+    expect(screen.getByTestId('signup-email-input')).toBeDefined();
+    expect(screen.getByTestId('signup-password-input')).toBeDefined();
+    expect(screen.getByTestId('signup-submit-button')).toBeDefined();
   });
 
   it('disables the submit button if inputs are empty', () => {
     render(<SignupPage />);
-    const submitButton = screen.getByRole('button', {
-      name: /create account/i,
-    }) as HTMLButtonElement;
+    const submitButton = screen.getByTestId(
+      'signup-submit-button'
+    ) as HTMLButtonElement;
 
     // Initially disabled
     expect(submitButton.disabled).toBe(true);
 
-    const nameInput = screen.getByPlaceholderText(/enter your name/i);
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/create a password/i);
+    const nameInput = screen.getByTestId('signup-name-input');
+    const emailInput = screen.getByTestId('signup-email-input');
+    const passwordInput = screen.getByTestId('signup-password-input');
 
     // Fill name, still disabled
     fireEvent.change(nameInput, { target: { value: 'John' } });
@@ -87,12 +85,10 @@ describe('SignupPage', () => {
 
     render(<SignupPage />);
 
-    const nameInput = screen.getByPlaceholderText(/enter your name/i);
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/create a password/i);
-    const submitButton = screen.getByRole('button', {
-      name: /create account/i,
-    });
+    const nameInput = screen.getByTestId('signup-name-input');
+    const emailInput = screen.getByTestId('signup-email-input');
+    const passwordInput = screen.getByTestId('signup-password-input');
+    const submitButton = screen.getByTestId('signup-submit-button');
 
     // The user provides a password that is too short
     fireEvent.change(nameInput, { target: { value: 'Olivier' } });
@@ -117,12 +113,10 @@ describe('SignupPage', () => {
 
     render(<SignupPage />);
 
-    const nameInput = screen.getByPlaceholderText(/enter your name/i);
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/create a password/i);
-    const submitButton = screen.getByRole('button', {
-      name: /create account/i,
-    });
+    const nameInput = screen.getByTestId('signup-name-input');
+    const emailInput = screen.getByTestId('signup-email-input');
+    const passwordInput = screen.getByTestId('signup-password-input');
+    const submitButton = screen.getByTestId('signup-submit-button');
 
     fireEvent.change(nameInput, { target: { value: 'Olivier' } });
     fireEvent.change(emailInput, { target: { value: 'oliechti@gmx.ch' } });

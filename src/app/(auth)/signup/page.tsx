@@ -96,6 +96,7 @@ export default function SignupPage() {
                 type="text"
                 aria-label="Full Name"
                 placeholder="Enter your name"
+                data-testid="signup-name-input"
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={name}
@@ -113,6 +114,7 @@ export default function SignupPage() {
                 type="email"
                 aria-label="Email"
                 placeholder="Enter your email"
+                data-testid="signup-email-input"
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={email}
@@ -130,6 +132,7 @@ export default function SignupPage() {
                 type={isVisible ? 'text' : 'password'}
                 aria-label="Password"
                 placeholder="Create a password"
+                data-testid="signup-password-input"
                 className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={password}
@@ -167,6 +170,7 @@ export default function SignupPage() {
 
             <Button
               type="submit"
+              data-testid="signup-submit-button"
               disabled={isPending || !isFormValid}
               className="mt-2 h-12 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0 hover:opacity-90 disabled:opacity-50"
             >

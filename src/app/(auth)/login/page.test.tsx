@@ -45,22 +45,22 @@ describe('LoginPage', () => {
     expect(
       screen.getByRole('heading', { name: /welcome back/i })
     ).toBeDefined();
-    expect(screen.getByPlaceholderText(/enter your email/i)).toBeDefined();
-    expect(screen.getByPlaceholderText(/enter your password/i)).toBeDefined();
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeDefined();
+    expect(screen.getByTestId('login-email-input')).toBeDefined();
+    expect(screen.getByTestId('login-password-input')).toBeDefined();
+    expect(screen.getByTestId('login-submit-button')).toBeDefined();
   });
 
   it('disables the submit button if inputs are empty', () => {
     render(<LoginPage />);
-    const submitButton = screen.getByRole('button', {
-      name: /sign in/i,
-    }) as HTMLButtonElement;
+    const submitButton = screen.getByTestId(
+      'login-submit-button'
+    ) as HTMLButtonElement;
 
     // Initially disabled
     expect(submitButton.disabled).toBe(true);
 
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/enter your password/i);
+    const emailInput = screen.getByTestId('login-email-input');
+    const passwordInput = screen.getByTestId('login-password-input');
 
     // Fill only email, still disabled
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
@@ -78,9 +78,9 @@ describe('LoginPage', () => {
 
     render(<LoginPage />);
 
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/enter your password/i);
-    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    const emailInput = screen.getByTestId('login-email-input');
+    const passwordInput = screen.getByTestId('login-password-input');
+    const submitButton = screen.getByTestId('login-submit-button');
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
@@ -100,9 +100,9 @@ describe('LoginPage', () => {
 
     render(<LoginPage />);
 
-    const emailInput = screen.getByPlaceholderText(/enter your email/i);
-    const passwordInput = screen.getByPlaceholderText(/enter your password/i);
-    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    const emailInput = screen.getByTestId('login-email-input');
+    const passwordInput = screen.getByTestId('login-password-input');
+    const submitButton = screen.getByTestId('login-submit-button');
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'correctpassword' } });
