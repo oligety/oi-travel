@@ -92,6 +92,8 @@ export default function LoginPage() {
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={email}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'login-error' : undefined}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -110,6 +112,8 @@ export default function LoginPage() {
                 className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={password}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'login-error' : undefined}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
@@ -133,13 +137,16 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <motion.p
+              <motion.div
+                id="login-error"
+                role="alert"
+                aria-live="polite"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="text-sm text-rose-500 bg-rose-500/10 px-4 py-2 rounded-lg border border-rose-500/20"
+                className="text-sm text-rose-500 bg-rose-500/10 p-3 rounded-lg border border-rose-500/20"
               >
                 {error}
-              </motion.p>
+              </motion.div>
             )}
 
             <Button

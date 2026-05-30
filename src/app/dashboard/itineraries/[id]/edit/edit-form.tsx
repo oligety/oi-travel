@@ -59,6 +59,14 @@ export default function EditItineraryForm({
           className="bg-zinc-950/50 border-white/10 text-zinc-100"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          aria-invalid={!!error}
+          aria-describedby={
+            error
+              ? 'edit-trip-error'
+              : success
+                ? 'edit-trip-success'
+                : undefined
+          }
         />
       </div>
 
@@ -68,15 +76,25 @@ export default function EditItineraryForm({
       </div>
 
       {error && (
-        <p className="text-sm text-rose-500 bg-rose-500/10 p-3 rounded-lg border border-rose-500/20">
+        <div
+          id="edit-trip-error"
+          role="alert"
+          aria-live="polite"
+          className="text-sm text-rose-500 bg-rose-500/10 p-3 rounded-lg border border-rose-500/20"
+        >
           {error}
-        </p>
+        </div>
       )}
 
       {success && (
-        <p className="text-sm text-emerald-500 bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
+        <div
+          id="edit-trip-success"
+          role="status"
+          aria-live="polite"
+          className="text-sm text-emerald-500 bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20"
+        >
           {success}
-        </p>
+        </div>
       )}
 
       <div className="flex justify-end gap-4 mt-8">

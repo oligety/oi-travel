@@ -100,6 +100,8 @@ export default function SignupPage() {
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={name}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'signup-error' : undefined}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -118,6 +120,8 @@ export default function SignupPage() {
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={email}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'signup-error' : undefined}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -136,6 +140,8 @@ export default function SignupPage() {
                 className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
                 value={password}
+                aria-invalid={!!error}
+                aria-describedby={error ? 'signup-error' : undefined}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
@@ -159,13 +165,16 @@ export default function SignupPage() {
             </div>
 
             {error && (
-              <motion.p
+              <motion.div
+                id="signup-error"
+                role="alert"
+                aria-live="polite"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 className="text-sm text-rose-500 bg-rose-500/10 px-4 py-2 rounded-lg border border-rose-500/20"
               >
                 {error}
-              </motion.p>
+              </motion.div>
             )}
 
             <Button

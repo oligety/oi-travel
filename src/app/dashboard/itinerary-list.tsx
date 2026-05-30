@@ -89,6 +89,7 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
                     <Button
                       variant="ghost"
                       size="sm"
+                      aria-label={`Edit ${trip.name}`}
                       className="h-8 text-zinc-400 hover:text-emerald-400 hover:bg-emerald-400/10"
                     >
                       <Edit2 size={14} className="mr-2" /> Edit
@@ -98,6 +99,7 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
                     variant="ghost"
                     size="sm"
                     onClick={() => setDeleteId(trip.id)}
+                    aria-label={`Delete ${trip.name}`}
                     className="h-8 text-zinc-400 hover:text-rose-400 hover:bg-rose-400/10"
                   >
                     <Trash2 size={14} className="mr-2" /> Delete
