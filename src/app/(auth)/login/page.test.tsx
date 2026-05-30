@@ -22,6 +22,10 @@ vi.mock('framer-motion', async () => {
       div: ({ children, className }: any) => (
         <div className={className}>{children}</div>
       ),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      p: ({ children, className }: any) => (
+        <p className={className}>{children}</p>
+      ),
     },
   };
 });
