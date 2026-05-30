@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import { Button } from '@heroui/button';
+import { Button } from '@/components/ui/button';
 import { signOut } from '@/auth';
 import { Map, Compass, Plus } from 'lucide-react';
 export default async function DashboardPage() {
@@ -34,8 +34,8 @@ export default async function DashboardPage() {
             <Button
               type="submit"
               size="sm"
-              variant="flat"
-              className="bg-white/10 text-zinc-200 hover:bg-rose-500/20 hover:text-rose-400 font-medium"
+              variant="ghost"
+              className="bg-white/10 text-zinc-200 hover:bg-rose-500/20 hover:text-rose-400 font-medium h-9 px-4"
             >
               Sign Out
             </Button>
@@ -61,11 +61,8 @@ export default async function DashboardPage() {
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Your Itineraries</h2>
-            <Button
-              color="primary"
-              startContent={<Plus size={16} />}
-              className="font-medium shadow-md shadow-primary-500/20"
-            >
+            <Button className="font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20">
+              <Plus size={16} className="mr-2" />
               New Trip
             </Button>
           </div>
@@ -83,10 +80,7 @@ export default async function DashboardPage() {
                 Your passport is waiting. Start exploring destinations and
                 crafting your first perfect itinerary.
               </p>
-              <Button
-                color="primary"
-                className="mt-6 font-medium shadow-lg shadow-primary-500/20 px-8"
-              >
+              <Button className="mt-6 font-medium shadow-lg shadow-primary/20 px-8 bg-primary hover:bg-primary/90">
                 Explore Destinations
               </Button>
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@heroui/button';
-import { Input } from '@heroui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -69,57 +69,48 @@ export default function Home() {
           className="mt-16 mx-auto max-w-4xl"
         >
           <div className="glass-panel rounded-3xl p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-2 transition-all hover:border-white/20">
-            <div className="flex-1 w-full">
+            <div className="relative flex-1 w-full flex items-center bg-transparent rounded-2xl hover:bg-white/5 focus-within:bg-white/10 transition-colors">
+              <MapPin className="absolute left-4 text-zinc-500" size={20} />
               <Input
                 placeholder="Where do you want to go?"
-                startContent={<MapPin className="text-zinc-500" size={20} />}
-                classNames={{
-                  inputWrapper:
-                    'bg-transparent border-none shadow-none hover:bg-white/5 focus-within:!bg-white/10 h-14 transition-colors',
-                  input: 'text-lg placeholder:text-zinc-500',
-                }}
+                className="pl-12 h-14 text-lg bg-transparent border-none shadow-none placeholder:text-zinc-500 focus-visible:ring-0"
               />
             </div>
             <div className="hidden sm:block w-px h-10 bg-white/10" />
-            <div className="flex-[0.7] w-full">
+            <div className="relative flex-[0.7] w-full flex items-center bg-transparent rounded-2xl hover:bg-white/5 focus-within:bg-white/10 transition-colors">
+              <Calendar className="absolute left-4 text-zinc-500" size={20} />
               <Input
                 type="text"
                 placeholder="Dates"
-                startContent={<Calendar className="text-zinc-500" size={20} />}
-                classNames={{
-                  inputWrapper:
-                    'bg-transparent border-none shadow-none hover:bg-white/5 focus-within:!bg-white/10 h-14 transition-colors',
-                  input: 'text-lg placeholder:text-zinc-500',
-                }}
+                className="pl-12 h-14 text-lg bg-transparent border-none shadow-none placeholder:text-zinc-500 focus-visible:ring-0"
               />
             </div>
             <div className="w-full sm:w-auto mt-2 sm:mt-0">
               <Button
                 size="lg"
                 className="w-full sm:w-auto h-14 px-8 font-semibold text-base rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-shadow border-0"
-                endContent={<ArrowRight size={18} />}
               >
-                Explore
+                Explore <ArrowRight className="ml-2" size={18} />
               </Button>
             </div>
           </div>
         </motion.div>
 
-        {/* Top Navigation Login Link (Absolute positioned for Landing) */}
+        {/* Top Navigation Login Link */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
           className="absolute top-8 right-8"
         >
-          <Button
-            as={Link}
-            href="/login"
-            variant="flat"
-            className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-md rounded-full font-medium px-6"
-          >
-            Sign In
-          </Button>
+          <Link href="/login">
+            <Button
+              variant="ghost"
+              className="bg-white/10 text-white hover:bg-white/20 hover:text-white backdrop-blur-md rounded-full font-medium px-6 h-10"
+            >
+              Sign In
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </main>

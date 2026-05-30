@@ -17,9 +17,11 @@ export async function signUpAction(formData: FormData) {
   const parsed = signUpSchema.safeParse(data);
 
   if (!parsed.success) {
+    const errors = parsed.error.flatten().fieldErrors;
+    const errorMessages = Object.values(errors).flat();
     return {
-      error: 'Invalid input data',
-      fields: parsed.error.flatten().fieldErrors,
+      error: errorMessages[0] || 'Invalid input data',
+      fields: errors,
     };
   }
 

@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master']
   pull_request:
-    branches: [ "master" ]
+    branches: ['master']
 
 jobs:
   build-test-lint:
@@ -35,5 +35,5 @@ jobs:
       - name: Build Application
         run: npm run build
         env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/oitravel?schema=public"
-          AUTH_SECRET: "ci-dummy-secret-at-least-32-chars-long"
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/oitravel?schema=public'
+          AUTH_SECRET: 'ci-dummy-secret-at-least-32-chars-long'

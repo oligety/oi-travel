@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@heroui/button';
-import { Input } from '@heroui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Mail, Lock, Eye, EyeOff, Plane } from 'lucide-react';
 import { loginAction } from '@/actions/auth';
 import Link from 'next/link';
@@ -27,9 +27,10 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen bg-zinc-950 text-zinc-50">
-      {/* Left Pane - Visual */}
-      <div className="relative hidden lg:flex flex-1 flex-col justify-between overflow-hidden bg-zinc-900/50 border-r border-white/5 p-12">
-        <div className="absolute inset-0 z-0">
+      {/* Left Side - Brand / Info (Hidden on mobile) */}
+      <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden border-r border-white/5 bg-zinc-950 p-12 lg:flex">
+        {/* Background glow effects */}
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -left-20 top-0 h-96 w-96 rounded-full bg-primary-600/20 blur-[100px]" />
           <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-emerald-600/20 blur-[100px]" />
         </div>
@@ -38,7 +39,9 @@ export default function LoginPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-primary-500 to-emerald-400 text-zinc-950">
             <Plane size={24} strokeWidth={2.5} />
           </div>
-          <span className="text-xl font-bold tracking-tight">OI Travel</span>
+          <span className="text-xl font-bold tracking-tight text-zinc-100">
+            OI Travel
+          </span>
         </div>
 
         <div className="z-10 max-w-md">
@@ -55,13 +58,13 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Pane - Form */}
+      {/* Right Side - Form */}
       <div className="flex flex-1 items-center justify-center p-8 sm:p-12">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
+          className="w-full max-w-sm"
         >
           <div className="mb-10 text-center lg:text-left">
             <h1 className="text-3xl font-semibold mb-2">Sign In</h1>
@@ -71,56 +74,53 @@ export default function LoginPage() {
           </div>
 
           <form action={handleSubmit} className="flex flex-col gap-6 mt-4">
-            <Input
-              name="email"
-              type="email"
-              aria-label="Email"
-              placeholder="Enter your email"
-              variant="bordered"
-              size="lg"
-              startContent={<Mail className="text-zinc-500" size={18} />}
-              isRequired
-              classNames={{
-                inputWrapper:
-                  'border-white/10 bg-zinc-900/50 hover:border-white/20 focus-within:!border-emerald-500',
-                input: 'text-zinc-100 placeholder:text-zinc-500',
-              }}
-            />
-            <Input
-              name="password"
-              aria-label="Password"
-              placeholder="Enter your password"
-              variant="bordered"
-              size="lg"
-              startContent={<Lock className="text-zinc-500" size={18} />}
-              endContent={
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={toggleVisibility}
-                  aria-label="toggle password visibility"
-                >
-                  {isVisible ? (
-                    <EyeOff
-                      className="text-zinc-500 pointer-events-none"
-                      size={18}
-                    />
-                  ) : (
-                    <Eye
-                      className="text-zinc-500 pointer-events-none"
-                      size={18}
-                    />
-                  )}
-                </button>
-              }
-              type={isVisible ? 'text' : 'password'}
-              isRequired
-              classNames={{
-                inputWrapper:
-                  'border-white/10 bg-zinc-900/50 hover:border-white/20 focus-within:!border-emerald-500',
-                input: 'text-zinc-100 placeholder:text-zinc-500',
-              }}
-            />
+            <div className="relative">
+              <Mail
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+                size={18}
+              />
+              <Input
+                name="email"
+                type="email"
+                aria-label="Email"
+                placeholder="Enter your email"
+                className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
+                required
+              />
+            </div>
+
+            <div className="relative">
+              <Lock
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+                size={18}
+              />
+              <Input
+                name="password"
+                type={isVisible ? 'text' : 'password'}
+                aria-label="Password"
+                placeholder="Enter your password"
+                className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
+                required
+              />
+              <button
+                className="absolute right-3 top-1/2 -translate-y-1/2 focus:outline-none"
+                type="button"
+                onClick={toggleVisibility}
+                aria-label="toggle password visibility"
+              >
+                {isVisible ? (
+                  <EyeOff
+                    className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                    size={18}
+                  />
+                ) : (
+                  <Eye
+                    className="text-zinc-500 hover:text-zinc-300 transition-colors"
+                    size={18}
+                  />
+                )}
+              </button>
+            </div>
 
             {error && (
               <motion.p
@@ -134,11 +134,10 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              isLoading={isPending}
-              size="lg"
-              className="mt-2 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0"
+              disabled={isPending}
+              className="mt-2 h-12 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0 hover:opacity-90"
             >
-              Sign In
+              {isPending ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
 
