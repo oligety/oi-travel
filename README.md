@@ -12,6 +12,8 @@ This project is built with a modern and highly optimized stack:
 - **Animations:** Framer Motion
 - **Code Quality:** ESLint, Prettier, Husky, Lint-Staged
 - **Testing:** Vitest (Unit) & Playwright (E2E)
+- **Database:** PostgreSQL & Prisma ORM
+- **Authentication:** Auth.js (NextAuth v5)
 - **Local Dev:** Docker Compose (with PostgreSQL)
 
 ## Getting Started
@@ -26,20 +28,35 @@ First, ensure you have Node.js and Docker installed on your system.
    npm install
    ```
 
-2. Run the development server:
+2. Generate Prisma Client and Run Migrations:
+
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev
+   ```
+
+3. Setup Environment Variables:
+
+   Ensure your `.env` contains the required keys (e.g., `DATABASE_URL` and `AUTH_SECRET`). If you don't have an auth secret, you can generate one using:
+
+   ```bash
+   npx auth secret
+   ```
+
+4. Run the development server:
 
    ```bash
    npm run dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
 ### Using Docker
 
-To start the application along with a PostgreSQL database, you can use Docker Compose:
+To start the PostgreSQL database (required for Prisma):
 
 ```bash
-docker compose up -d
+docker compose up -d db
 ```
 
 The app will be accessible at [http://localhost:3000](http://localhost:3000).
