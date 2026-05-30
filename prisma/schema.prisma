@@ -59,12 +59,22 @@ model VerificationToken {
 }
 
 model Itinerary {
-  id        String   @id @default(cuid())
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(cuid())
+  name       String
+  startDate  DateTime
+  endDate    DateTime
+  userId     String
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  travelDays TravelDay[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model TravelDay {
+  id          String    @id @default(cuid())
+  date        DateTime
+  itineraryId String
+  itinerary   Itinerary @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+
+  @@unique([itineraryId, date])
 }

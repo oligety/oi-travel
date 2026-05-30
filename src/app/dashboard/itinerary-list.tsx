@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { Edit2, Trash2, Calendar, MapPin } from 'lucide-react';
@@ -24,6 +25,7 @@ import { deleteItinerary } from '@/actions/itinerary';
 import type { Itinerary } from '@prisma/client';
 
 export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
+  const router = useRouter();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -71,7 +73,8 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
           {itineraries.map((trip) => (
             <TableRow
               key={trip.id}
-              className="border-white/10 hover:bg-white/5 transition-colors"
+              onClick={() => router.push(`/dashboard/itineraries/${trip.id}`)}
+              className="border-white/10 hover:bg-white/5 transition-colors cursor-pointer"
             >
               <TableCell className="font-medium text-zinc-200">
                 {trip.name}
@@ -85,7 +88,10 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <Link href={`/dashboard/itineraries/${trip.id}/edit`}>
+                  <Link
+                    href={`/dashboard/itineraries/${trip.id}/edit`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Button
                       variant="ghost"
                       size="sm"
@@ -98,7 +104,10 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setDeleteId(trip.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteId(trip.id);
+                    }}
                     aria-label={`Delete ${trip.name}`}
                     className="h-8 text-zinc-400 hover:text-rose-400 hover:bg-rose-400/10"
                   >

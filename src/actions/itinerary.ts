@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
+import { eachDayOfInterval } from 'date-fns';
 
 const itinerarySchema = z
   .object({
@@ -41,12 +42,19 @@ export async function createItinerary(formData: FormData) {
   const { name, startDate, endDate } = parsed.data;
 
   try {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = eachDayOfInterval({ start, end });
+
     const itinerary = await prisma.itinerary.create({
       data: {
         name,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: start,
+        endDate: end,
         userId: session.user.id,
+        travelDays: {
+          create: days.map((date) => ({ date })),
+        },
       },
     });
 

@@ -7,14 +7,10 @@ import { Label } from '@/components/ui/label';
 import { DatePickerWithRange } from '@/components/date-range-picker';
 import { createItinerary } from '@/actions/itinerary';
 import { DateRange } from 'react-day-picker';
-import { addDays } from 'date-fns';
 
 export default function NewItineraryPage() {
   const router = useRouter();
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 7),
-  });
+  const [date, setDate] = useState<DateRange | undefined>();
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [name, setName] = useState('');
@@ -30,7 +26,7 @@ export default function NewItineraryPage() {
       setError(res.error);
       setIsPending(false);
     } else if (res.id) {
-      router.push(`/dashboard/itineraries/${res.id}/edit`);
+      router.push(`/dashboard/itineraries/${res.id}`);
     }
   }
 
