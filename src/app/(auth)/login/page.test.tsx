@@ -50,6 +50,27 @@ describe('LoginPage', () => {
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDefined();
   });
 
+  it('disables the submit button if inputs are empty', () => {
+    render(<LoginPage />);
+    const submitButton = screen.getByRole('button', {
+      name: /sign in/i,
+    }) as HTMLButtonElement;
+
+    // Initially disabled
+    expect(submitButton.disabled).toBe(true);
+
+    const emailInput = screen.getByPlaceholderText(/enter your email/i);
+    const passwordInput = screen.getByPlaceholderText(/enter your password/i);
+
+    // Fill only email, still disabled
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    expect(submitButton.disabled).toBe(true);
+
+    // Fill both, should be enabled
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    expect(submitButton.disabled).toBe(false);
+  });
+
   it('shows an error message if login fails', async () => {
     vi.mocked(authActions.loginAction).mockResolvedValueOnce({
       error: 'Invalid credentials.',

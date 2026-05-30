@@ -2,13 +2,22 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { signOut } from '@/auth';
-import { Map, Compass, Plus } from 'lucide-react';
+import { Map, Plus } from 'lucide-react';
+import { prisma } from '@/lib/prisma';
+import { ItineraryList } from './itinerary-list';
+import Link from 'next/link';
+
 export default async function DashboardPage() {
   const session = await auth();
 
   if (!session?.user) {
     redirect('/login');
   }
+
+  const itineraries = await prisma.itinerary.findMany({
+    where: { userId: session.user.id },
+    orderBy: { startDate: 'asc' },
+  });
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-50 font-sans">
@@ -61,32 +70,15 @@ export default async function DashboardPage() {
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Your Itineraries</h2>
-            <Button className="font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20">
-              <Plus size={16} className="mr-2" />
-              New Trip
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Empty State Card */}
-            <div className="glass-panel flex flex-col items-center justify-center rounded-3xl p-10 text-center col-span-full py-20 border-dashed border-2 border-zinc-800">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-900 border border-white/5">
-                <Compass className="text-primary-400" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-zinc-200">
-                No trips planned yet
-              </h3>
-              <p className="mt-2 text-zinc-500 max-w-sm">
-                Your passport is waiting. Start exploring destinations and
-                crafting your first perfect itinerary.
-              </p>
-              <Button className="mt-6 font-medium shadow-lg shadow-primary/20 px-8 bg-primary hover:bg-primary/90">
-                Explore Destinations
+            <Link href="/dashboard/itineraries/new">
+              <Button className="font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20">
+                <Plus size={16} className="mr-2" />
+                New Trip
               </Button>
-            </div>
-
-            {/* Future trips will render here as cards */}
+            </Link>
           </div>
+
+          <ItineraryList itineraries={itineraries} />
         </section>
       </main>
     </div>

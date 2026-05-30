@@ -53,6 +53,32 @@ describe('SignupPage', () => {
     ).toBeDefined();
   });
 
+  it('disables the submit button if inputs are empty', () => {
+    render(<SignupPage />);
+    const submitButton = screen.getByRole('button', {
+      name: /create account/i,
+    }) as HTMLButtonElement;
+
+    // Initially disabled
+    expect(submitButton.disabled).toBe(true);
+
+    const nameInput = screen.getByPlaceholderText(/enter your name/i);
+    const emailInput = screen.getByPlaceholderText(/enter your email/i);
+    const passwordInput = screen.getByPlaceholderText(/create a password/i);
+
+    // Fill name, still disabled
+    fireEvent.change(nameInput, { target: { value: 'John' } });
+    expect(submitButton.disabled).toBe(true);
+
+    // Fill email, still disabled
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    expect(submitButton.disabled).toBe(true);
+
+    // Fill all, should be enabled
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    expect(submitButton.disabled).toBe(false);
+  });
+
   it('shows an error message if input data is invalid (e.g. password too short)', async () => {
     // Mock validation error returned by the server action
     vi.mocked(authActions.signUpAction).mockResolvedValueOnce({

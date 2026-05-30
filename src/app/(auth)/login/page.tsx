@@ -12,6 +12,10 @@ export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const isFormValid = email.trim().length > 0 && password.trim().length > 0;
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -86,6 +90,8 @@ export default function LoginPage() {
                 placeholder="Enter your email"
                 className="pl-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -101,6 +107,8 @@ export default function LoginPage() {
                 placeholder="Enter your password"
                 className="pl-10 pr-10 h-12 border-white/10 bg-zinc-900/50 hover:border-white/20 focus-visible:ring-1 focus-visible:ring-emerald-500 text-zinc-100 placeholder:text-zinc-500 rounded-xl"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 focus:outline-none"
@@ -134,8 +142,8 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              disabled={isPending}
-              className="mt-2 h-12 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0 hover:opacity-90"
+              disabled={isPending || !isFormValid}
+              className="mt-2 h-12 font-medium text-base rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0 hover:opacity-90 disabled:opacity-50"
             >
               {isPending ? 'Signing In...' : 'Sign In'}
             </Button>
