@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, MapPin } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -26,9 +26,11 @@ export default async function ViewItineraryPage({
     },
   });
 
-  if (!itinerary || itinerary.userId !== session.user.id) {
+  if (!itinerary) {
     notFound();
   }
+
+  const role = session.user.role;
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-6">
@@ -54,11 +56,14 @@ export default async function ViewItineraryPage({
               Back to Dashboard
             </Button>
           </Link>
-          <Link href={`/dashboard/itineraries/${itinerary.id}/edit`}>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Edit Trip
-            </Button>
-          </Link>
+          {(role === 'ADMIN' ||
+            (role === 'EDITOR' && itinerary.userId === session.user.id)) && (
+            <Link href={`/dashboard/itineraries/${itinerary.id}/edit`}>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                Edit Trip
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 

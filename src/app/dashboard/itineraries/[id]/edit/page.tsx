@@ -19,7 +19,10 @@ export default async function EditItineraryPage({
     where: { id },
   });
 
-  if (!itinerary || itinerary.userId !== session.user.id) {
+  if (
+    !itinerary ||
+    (itinerary.userId !== session.user.id && session.user.role !== 'ADMIN')
+  ) {
     notFound();
   }
 

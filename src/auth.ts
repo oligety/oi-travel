@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
+import { Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { authConfig } from './auth.config';
 
@@ -9,6 +10,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt' },
+  callbacks: {
+    ...authConfig.callbacks,
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        if (token.sub) {
+          session.user.id = token.sub;
+        }
+        if (token.role) {
+          session.user.role = token.role as Role;
+        } else if (session.user.id) {
+          // Fallback for older sessions without role in JWT
+          const dbUser = await prisma.user.findUnique({
+            where: { id: session.user.id },
+          });
+          if (dbUser) {
+            session.user.role = dbUser.role as Role;
+          }
+        }
+      }
+      return session;
+    },
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -40,7 +70,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        return user;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],

@@ -24,7 +24,15 @@ import {
 import { deleteItinerary } from '@/actions/itinerary';
 import type { Itinerary } from '@prisma/client';
 
-export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
+export function ItineraryList({
+  itineraries,
+  role = 'EDITOR',
+  currentUserId,
+}: {
+  itineraries: Itinerary[];
+  role?: string;
+  currentUserId?: string;
+}) {
   const router = useRouter();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -50,11 +58,13 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
           Your passport is waiting. Start exploring destinations and crafting
           your first perfect itinerary.
         </p>
-        <Link href="/dashboard/itineraries/new">
-          <Button className="mt-6 font-medium shadow-lg shadow-primary/20 px-8 bg-primary hover:bg-primary/90">
-            Create Trip
-          </Button>
-        </Link>
+        {role !== 'VIEWER' && (
+          <Link href="/dashboard/itineraries/new">
+            <Button className="mt-6 font-medium shadow-lg shadow-primary/20 px-8 bg-primary hover:bg-primary/90">
+              Create Trip
+            </Button>
+          </Link>
+        )}
       </div>
     );
   }
@@ -66,7 +76,11 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
           <TableRow className="border-white/10 hover:bg-transparent">
             <TableHead className="text-zinc-400">Trip Name</TableHead>
             <TableHead className="text-zinc-400">Dates</TableHead>
-            <TableHead className="text-zinc-400 text-right">Actions</TableHead>
+            {role !== 'VIEWER' && (
+              <TableHead className="text-zinc-400 text-right">
+                Actions
+              </TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -86,35 +100,40 @@ export function ItineraryList({ itineraries }: { itineraries: Itinerary[] }) {
                   {format(new Date(trip.endDate), 'MMM d, yyyy')}
                 </div>
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Link
-                    href={`/dashboard/itineraries/${trip.id}/edit`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      aria-label={`Edit ${trip.name}`}
-                      className="h-8 text-zinc-400 hover:text-emerald-400 hover:bg-emerald-400/10"
-                    >
-                      <Edit2 size={14} className="mr-2" /> Edit
-                    </Button>
-                  </Link>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDeleteId(trip.id);
-                    }}
-                    aria-label={`Delete ${trip.name}`}
-                    className="h-8 text-zinc-400 hover:text-rose-400 hover:bg-rose-400/10"
-                  >
-                    <Trash2 size={14} className="mr-2" /> Delete
-                  </Button>
-                </div>
-              </TableCell>
+              {role !== 'VIEWER' && (
+                <TableCell className="text-right">
+                  {(role === 'ADMIN' ||
+                    (role === 'EDITOR' && trip.userId === currentUserId)) && (
+                    <div className="flex justify-end gap-2">
+                      <Link
+                        href={`/dashboard/itineraries/${trip.id}/edit`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label={`Edit ${trip.name}`}
+                          className="h-8 text-zinc-400 hover:text-emerald-400 hover:bg-emerald-400/10"
+                        >
+                          <Edit2 size={14} className="mr-2" /> Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteId(trip.id);
+                        }}
+                        aria-label={`Delete ${trip.name}`}
+                        className="h-8 text-zinc-400 hover:text-rose-400 hover:bg-rose-400/10"
+                      >
+                        <Trash2 size={14} className="mr-2" /> Delete
+                      </Button>
+                    </div>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

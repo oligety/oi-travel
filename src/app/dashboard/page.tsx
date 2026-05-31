@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { signOut } from '@/auth';
-import { Map, Plus } from 'lucide-react';
+import { Map, Plus, Settings } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { ItineraryList } from './itinerary-list';
 import Link from 'next/link';
@@ -14,8 +14,10 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
+  const role = session.user.role;
+
+  // Show all itineraries for everyone
   const itineraries = await prisma.itinerary.findMany({
-    where: { userId: session.user.id },
     orderBy: { startDate: 'asc' },
   });
 
@@ -34,6 +36,18 @@ export default async function DashboardPage() {
           <span className="text-sm text-zinc-400 hidden sm:inline-block">
             {session.user.email}
           </span>
+          {role === 'ADMIN' && (
+            <Link href="/dashboard/admin">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-zinc-200 hover:bg-white/10"
+              >
+                <Settings size={16} className="mr-2" />
+                Admin
+              </Button>
+            </Link>
+          )}
           <form
             action={async () => {
               'use server';
@@ -70,15 +84,21 @@ export default async function DashboardPage() {
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Your Itineraries</h2>
-            <Link href="/dashboard/itineraries/new">
-              <Button className="font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20">
-                <Plus size={16} className="mr-2" />
-                New Trip
-              </Button>
-            </Link>
+            {role !== 'VIEWER' && (
+              <Link href="/dashboard/itineraries/new">
+                <Button className="font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/20">
+                  <Plus size={16} className="mr-2" />
+                  New Trip
+                </Button>
+              </Link>
+            )}
           </div>
 
-          <ItineraryList itineraries={itineraries} />
+          <ItineraryList
+            itineraries={itineraries}
+            role={role}
+            currentUserId={session.user.id}
+          />
         </section>
       </main>
     </div>

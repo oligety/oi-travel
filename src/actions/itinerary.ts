@@ -26,6 +26,9 @@ export async function createItinerary(formData: FormData) {
   if (!session?.user?.id) {
     return { error: 'Unauthorized' };
   }
+  if (session.user.role === 'VIEWER') {
+    return { error: 'Viewers cannot create itineraries' };
+  }
 
   const data = Object.fromEntries(formData.entries());
   const parsed = itinerarySchema.safeParse(data);
@@ -70,6 +73,9 @@ export async function updateItinerary(id: string, formData: FormData) {
   if (!session?.user?.id) {
     return { error: 'Unauthorized' };
   }
+  if (session.user.role === 'VIEWER') {
+    return { error: 'Viewers cannot update itineraries' };
+  }
 
   const data = Object.fromEntries(formData.entries());
   const parsed = itinerarySchema.safeParse(data);
@@ -90,7 +96,10 @@ export async function updateItinerary(id: string, formData: FormData) {
     const existing = await prisma.itinerary.findUnique({
       where: { id },
     });
-    if (!existing || existing.userId !== session.user.id) {
+    if (
+      !existing ||
+      (existing.userId !== session.user.id && session.user.role !== 'ADMIN')
+    ) {
       return { error: 'Unauthorized or not found' };
     }
 
@@ -115,12 +124,18 @@ export async function deleteItinerary(id: string) {
   if (!session?.user?.id) {
     return { error: 'Unauthorized' };
   }
+  if (session.user.role === 'VIEWER') {
+    return { error: 'Viewers cannot delete itineraries' };
+  }
 
   try {
     const existing = await prisma.itinerary.findUnique({
       where: { id },
     });
-    if (!existing || existing.userId !== session.user.id) {
+    if (
+      !existing ||
+      (existing.userId !== session.user.id && session.user.role !== 'ADMIN')
+    ) {
       return { error: 'Unauthorized or not found' };
     }
 
